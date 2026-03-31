@@ -1,56 +1,65 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState, useLayoutEffect } from 'react';
+ 
 const Hero = ({ data }) => {
   const [loaded, setLoaded] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-  useEffect(() => { setTimeout(() => setLoaded(true), 300); }, []);
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+  const [isMobile, setIsMobile] = useState(false);
+ 
+  useLayoutEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
   }, []);
-
+ 
+  useEffect(() => { setTimeout(() => setLoaded(true), 300); }, []);
+ 
   const profile = data?.profile || {};
-
+ 
   return (
-    <section id="introduction" style={{ position: 'relative', height: '100vh', minHeight: 600,
-      display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
-
+    <section id="introduction" style={{
+      position: 'relative',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: isMobile ? 'flex-start' : 'center',
+      overflow: 'hidden',
+      paddingTop: isMobile ? '80px' : '0',
+    }}>
+ 
       {/* Video Background */}
       <video autoPlay muted loop playsInline
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}>
         <source src="/bg-video.mp4" type="video/mp4" />
       </video>
-
+ 
       {/* Overlays */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 1,
         background: 'linear-gradient(135deg, rgba(6,14,33,0.92) 0%, rgba(13,27,62,0.80) 50%, rgba(6,14,33,0.88) 100%)' }} />
       <div style={{ position: 'absolute', inset: 0, zIndex: 2,
         background: 'radial-gradient(ellipse at 70% 50%, rgba(201,168,76,0.06) 0%, transparent 60%)' }} />
-
+ 
       {/* Decorative lines */}
       <div style={{ position: 'absolute', top: 0, left: '8%', width: 1, height: '100%', zIndex: 2,
         background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.2), transparent)' }} />
       <div style={{ position: 'absolute', top: 0, right: '8%', width: 1, height: '100%', zIndex: 2,
         background: 'linear-gradient(to bottom, transparent, rgba(201,168,76,0.2), transparent)' }} />
-
+ 
       {/* Content */}
-      <div style={{ position: 'relative', zIndex: 3, maxWidth: 900, margin: '0 auto', 
-        paddingTop: isMobile ? '140px' : '90px',
-        paddingLeft: isMobile ? '24px' : '40px',
-        paddingRight: isMobile ? '24px' : '40px',
-        paddingBottom: 0,
-        width: '100%' }}>
-        
+      <div style={{
+        position: 'relative',
+        zIndex: 3,
+        maxWidth: 900,
+        margin: '0 auto',
+        padding: isMobile ? '20px 24px 40px' : '90px 40px 0',
+        width: '100%',
+      }}>
+ 
         <div style={{ opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(30px)',
           transition: 'all 1s ease 0.2s' }}>
           <div className="section-label" style={{ marginBottom: 28 }}>
             HR & Compliance Professionals
           </div>
         </div>
-
+ 
         <div style={{ opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(40px)',
           transition: 'all 1s ease 0.4s' }}>
           <h1 style={{ fontFamily: 'Playfair Display', fontSize: 'clamp(2.6rem, 6vw, 5rem)',
@@ -59,7 +68,7 @@ const Hero = ({ data }) => {
             <span className="gold-text">Professionals</span>
           </h1>
         </div>
-
+ 
         <div style={{ opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(40px)',
           transition: 'all 1s ease 0.6s' }}>
           <p style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: 'var(--cream-dim)', maxWidth: 560,
@@ -70,7 +79,7 @@ const Hero = ({ data }) => {
             {profile.description || 'Expert audit and compliance services trusted by organizations across India.'}
           </p>
         </div>
-
+ 
         <div style={{ opacity: loaded ? 1 : 0, transform: loaded ? 'none' : 'translateY(40px)',
           transition: 'all 1s ease 0.8s', display: 'flex', gap: 16, flexWrap: 'wrap' }}>
           <button className="btn-gold"
@@ -82,7 +91,7 @@ const Hero = ({ data }) => {
             Get In Touch
           </button>
         </div>
-
+ 
         {/* Animated stat counters */}
         <div style={{ opacity: loaded ? 1 : 0, transition: 'all 1s ease 1s',
           marginTop: 48, display: 'flex', gap: 40, flexWrap: 'wrap' }}>
@@ -102,7 +111,7 @@ const Hero = ({ data }) => {
             </div>
           ))}
         </div>
-
+ 
         {/* Audit badges */}
         <div style={{ opacity: loaded ? 1 : 0, transition: 'all 1s ease 1.1s',
           marginTop: 60, display: 'flex', flexWrap: 'wrap', gap: 10 }}>
@@ -113,7 +122,7 @@ const Hero = ({ data }) => {
           ))}
         </div>
       </div>
-
+ 
       {/* Scroll indicator */}
       <div style={{ position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)',
         zIndex: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
@@ -124,5 +133,5 @@ const Hero = ({ data }) => {
     </section>
   );
 };
-
+ 
 export default Hero;
