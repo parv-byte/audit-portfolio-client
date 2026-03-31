@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-
+ 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   const [navVisible, setNavVisible] = useState(false);
-
+ 
   useEffect(() => {
     // Entry animation
     setTimeout(() => setNavVisible(true), 200);
-
+ 
     const onScroll = () => {
       setScrolled(window.scrollY > 60);
       // Track active section
@@ -24,14 +24,14 @@ const Navbar = () => {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
+ 
   const links = ['Introduction', 'Services', 'Team', 'Certificates', 'Contact'];
-
+ 
   const scrollTo = (id) => {
     document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' });
     setMenuOpen(false);
   };
-
+ 
   return (
     <nav style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
@@ -62,7 +62,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
+ 
       {/* Desktop Links */}
       <div style={{ display: 'flex', gap: 36 }} className="desktop-nav">
         {links.map(link => {
@@ -89,7 +89,7 @@ const Navbar = () => {
           onMouseLeave={e => e.target.style.background = 'transparent'}
         >Admin</a>
       </div>
-
+ 
       {/* Mobile hamburger */}
       <button onClick={() => setMenuOpen(!menuOpen)}
         style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer', padding: 8 }}
@@ -100,7 +100,7 @@ const Navbar = () => {
         <div style={{ width: 24, height: 2, background: 'var(--gold)', transition: 'all 0.3s',
           transform: menuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none' }} />
       </button>
-
+ 
       {/* Mobile menu */}
       {menuOpen && (
         <div style={{ position: 'absolute', top: '100%', left: 0, right: 0,
@@ -117,15 +117,18 @@ const Navbar = () => {
             textTransform: 'uppercase', textDecoration: 'none', padding: '8px 0' }}>Admin</a>
         </div>
       )}
-
+ 
       <style>{`
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .hamburger { display: block !important; }
+          nav {
+            padding: 12px 20px !important;
+          }
         }
       `}</style>
     </nav>
   );
 };
-
+ 
 export default Navbar;
